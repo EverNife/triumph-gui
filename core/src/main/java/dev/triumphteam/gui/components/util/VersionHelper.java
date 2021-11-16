@@ -85,6 +85,11 @@ public final class VersionHelper {
     public static final boolean IS_CUSTOM_MODEL_DATA = CURRENT_VERSION >= V1_14;
 
     /**
+     * Checks if the version is 1.7.10, required for NBT nms classes
+     */
+    public static final boolean IS_1_7_10 = CURRENT_VERSION == 1071;
+
+    /**
      * Check if the server has access to the Paper API
      * Taken from <a href="https://github.com/PaperMC/PaperLib">PaperLib</a>
      *
