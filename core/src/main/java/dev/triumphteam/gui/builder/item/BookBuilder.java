@@ -24,8 +24,6 @@
 package dev.triumphteam.gui.builder.item;
 
 import dev.triumphteam.gui.components.exception.GuiException;
-import dev.triumphteam.gui.components.util.Legacy;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -63,7 +61,7 @@ public class BookBuilder extends BaseItemBuilder<BookBuilder> {
      */
     @NotNull
     @Contract("_ -> this")
-    public BookBuilder author(@Nullable final Component author) {
+    public BookBuilder author(@Nullable final String author) {
         final BookMeta bookMeta = (BookMeta) getMeta();
 
         if (author == null) {
@@ -72,7 +70,7 @@ public class BookBuilder extends BaseItemBuilder<BookBuilder> {
             return this;
         }
 
-        bookMeta.setAuthor(Legacy.SERIALIZER.serialize(author));
+        bookMeta.setAuthor(author);
         setMeta(bookMeta);
         return this;
     }
@@ -104,7 +102,7 @@ public class BookBuilder extends BaseItemBuilder<BookBuilder> {
      */
     @NotNull
     @Contract("_ -> this")
-    public BookBuilder page(@NotNull final Component... pages) {
+    public BookBuilder page(@NotNull final String... pages) {
         return page(Arrays.asList(pages));
     }
 
@@ -118,11 +116,11 @@ public class BookBuilder extends BaseItemBuilder<BookBuilder> {
      */
     @NotNull
     @Contract("_ -> this")
-    public BookBuilder page(@NotNull final List<Component> pages) {
+    public BookBuilder page(@NotNull final List<String> pages) {
         final BookMeta bookMeta = (BookMeta) getMeta();
 
-        for (final Component page : pages) {
-            bookMeta.addPage(Legacy.SERIALIZER.serialize(page));
+        for (final String page : pages) {
+            bookMeta.addPage(page);
         }
 
         setMeta(bookMeta);
@@ -145,10 +143,10 @@ public class BookBuilder extends BaseItemBuilder<BookBuilder> {
      */
     @NotNull
     @Contract("_, _ -> this")
-    public BookBuilder page(final int page, @NotNull final Component data) {
+    public BookBuilder page(final int page, @NotNull final String data) {
         final BookMeta bookMeta = (BookMeta) getMeta();
 
-        bookMeta.setPage(page, Legacy.SERIALIZER.serialize(data));
+        bookMeta.setPage(page, data);
         setMeta(bookMeta);
         return this;
     }
@@ -164,7 +162,7 @@ public class BookBuilder extends BaseItemBuilder<BookBuilder> {
      */
     @NotNull
     @Contract("_ -> this")
-    public BookBuilder title(@Nullable Component title) {
+    public BookBuilder title(@Nullable String title) {
         final BookMeta bookMeta = (BookMeta) getMeta();
 
         if (title == null) {
@@ -173,7 +171,7 @@ public class BookBuilder extends BaseItemBuilder<BookBuilder> {
             return this;
         }
 
-        bookMeta.setTitle(Legacy.SERIALIZER.serialize(title));
+        bookMeta.setTitle(title);
         setMeta(bookMeta);
         return this;
     }

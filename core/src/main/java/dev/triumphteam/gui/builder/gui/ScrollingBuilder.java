@@ -24,9 +24,7 @@
 package dev.triumphteam.gui.builder.gui;
 
 import dev.triumphteam.gui.components.ScrollType;
-import dev.triumphteam.gui.components.util.Legacy;
 import dev.triumphteam.gui.guis.ScrollingGui;
-import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -85,7 +83,7 @@ public final class ScrollingBuilder extends BaseGuiBuilder<ScrollingGui, Scrolli
     @Override
     @Contract(" -> new")
     public ScrollingGui create() {
-        final ScrollingGui gui = new ScrollingGui(getRows(), pageSize, Legacy.SERIALIZER.serialize(getTitle()), scrollType, getModifiers());
+        final ScrollingGui gui = new ScrollingGui(getRows(), pageSize, getTitle(), scrollType, getModifiers());
 
         final Consumer<ScrollingGui> consumer = getConsumer();
         if (consumer != null) consumer.accept(gui);

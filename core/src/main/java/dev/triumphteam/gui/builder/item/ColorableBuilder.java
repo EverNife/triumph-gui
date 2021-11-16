@@ -1,7 +1,6 @@
 package dev.triumphteam.gui.builder.item;
 
 import org.bukkit.Color;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public interface ColorableBuilder<B extends BaseItemBuilder<B>> {

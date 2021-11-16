@@ -26,7 +26,6 @@ package dev.triumphteam.gui.builder.gui;
 import dev.triumphteam.gui.components.InteractionModifier;
 import dev.triumphteam.gui.components.exception.GuiException;
 import dev.triumphteam.gui.guis.BaseGui;
-import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +43,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("unchecked")
 public abstract class BaseGuiBuilder<G extends BaseGui, B extends BaseGuiBuilder<G, B>> {
 
-    private Component title = null;
+    private String title = null;
     private int rows = 1;
     private final EnumSet<InteractionModifier> interactionModifiers = EnumSet.noneOf(InteractionModifier.class);
 
@@ -73,7 +72,7 @@ public abstract class BaseGuiBuilder<G extends BaseGui, B extends BaseGuiBuilder
      */
     @NotNull
     @Contract("_ -> this")
-    public B title(@NotNull final Component title) {
+    public B title(@NotNull final String title) {
         this.title = title;
         return (B) this;
     }
@@ -274,7 +273,7 @@ public abstract class BaseGuiBuilder<G extends BaseGui, B extends BaseGuiBuilder
      * @return The current title
      */
     @NotNull
-    protected Component getTitle() {
+    protected String getTitle() {
         if (title == null) {
             throw new GuiException("GUI title is missing!");
         }

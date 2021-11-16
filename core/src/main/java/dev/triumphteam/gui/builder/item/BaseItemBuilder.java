@@ -25,10 +25,8 @@ package dev.triumphteam.gui.builder.item;
 
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.components.util.ItemNbt;
-import dev.triumphteam.gui.components.util.Legacy;
 import dev.triumphteam.gui.components.util.VersionHelper;
 import dev.triumphteam.gui.guis.GuiItem;
-import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -49,7 +47,6 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 /**
  * Contains all the common methods for the future ItemBuilders
@@ -82,8 +79,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
      */
     @NotNull
     @Contract("_ -> this")
-    public B name(@NotNull final Component name) {
-        meta.setDisplayName(Legacy.SERIALIZER.serialize(name));
+    public B name(@NotNull final String name) {
+        meta.setDisplayName(name);
         return (B) this;
     }
 
@@ -110,7 +107,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
      */
     @NotNull
     @Contract("_ -> this")
-    public B lore(@NotNull final Component... lore) {
+    public B lore(@NotNull final String... lore) {
         return lore(Arrays.asList(lore));
     }
 
@@ -123,8 +120,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
      */
     @NotNull
     @Contract("_ -> this")
-    public B lore(@NotNull final List<Component> lore) {
-        meta.setLore(lore.stream().map(Legacy.SERIALIZER::serialize).collect(Collectors.toList()));
+    public B lore(@NotNull final List<String> lore) {
+        meta.setLore(lore);
         return (B) this;
     }
 
@@ -137,12 +134,11 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
      */
     @NotNull
     @Contract("_ -> this")
-    public B lore(@NotNull final Consumer<List<Component>> lore) {
+    public B lore(@NotNull final Consumer<List<String>> lore) {
         final List<String> strings = meta.hasLore() ? meta.getLore() : new ArrayList<>();
-        final List<Component> components = strings.stream().map(Legacy.SERIALIZER::deserialize).collect(Collectors.toList());
 
-        lore.accept(components);
-        return lore(components);
+        lore.accept(strings);
+        return lore(strings);
     }
 
     /**
