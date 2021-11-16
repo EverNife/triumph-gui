@@ -23,6 +23,7 @@
  */
 package dev.triumphteam.gui.components.util;
 
+import dev.triumphteam.gui.components.nbt.Forge1710LegacyNbt;
 import dev.triumphteam.gui.components.nbt.LegacyNbt;
 import dev.triumphteam.gui.components.nbt.NbtWrapper;
 import dev.triumphteam.gui.components.nbt.Pdc;
@@ -91,6 +92,13 @@ public final class ItemNbt {
      */
     private static NbtWrapper selectNbt() {
         if (VersionHelper.IS_PDC_VERSION) return new Pdc();
+        if (VersionHelper.IS_1_7_10){
+            try {
+                return new Forge1710LegacyNbt();
+            }catch (Throwable e){
+                e.printStackTrace();
+            }
+        }
         return new LegacyNbt();
     }
 
