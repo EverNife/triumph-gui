@@ -121,6 +121,8 @@ public final class VersionHelper {
         // Should never fail
         if (version == null) throw new GuiException("Could not retrieve server version!");
 
+        if (version == 1710) version = 1071;
+
         return version;
     }
 
