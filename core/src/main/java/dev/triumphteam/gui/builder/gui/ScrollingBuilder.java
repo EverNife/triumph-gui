@@ -31,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Consumer;
 
 /**
- * The simple GUI builder is used for creating a {@link ScrollingGui} that uses {@link Component} for title
+ * The simple GUI builder is used for creating a {@link ScrollingGui} that uses {@link String} for title
  * TODO This class needs more work to remove the redundant pageSize since it's the same as the paginated builder
  */
 public final class ScrollingBuilder extends BaseGuiBuilder<ScrollingGui, ScrollingBuilder> {

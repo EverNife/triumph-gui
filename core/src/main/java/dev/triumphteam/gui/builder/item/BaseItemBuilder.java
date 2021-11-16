@@ -71,9 +71,9 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
     }
 
     /**
-     * Sets the display name of the item using {@link Component}
+     * Sets the display name of the item using {@link String}
      *
-     * @param name The {@link Component} name
+     * @param name The {@link String} name
      * @return {@link ItemBuilder}
      * @since 3.0.0
      */
@@ -128,7 +128,7 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
     /**
      * Consumer for freely adding to the lore
      *
-     * @param lore A {@link Consumer} with the {@link List} of lore {@link Component}
+     * @param lore A {@link Consumer} with the {@link List} of lore {@link String}
      * @return {@link ItemBuilder}
      * @since 3.0.0
      */
