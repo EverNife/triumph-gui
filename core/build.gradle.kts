@@ -72,11 +72,11 @@ tasks {
         repositories {
             maven {
                 credentials {
-                    username = System.getenv("REPO_USER")
-                    password = System.getenv("REPO_PASS")
+                    username = System.getenv("PETRUSMAVEN_ACTOR")
+                    password = System.getenv("PETRUSMAVEN_TOKEN")
                 }
 
-                url = uri("https://repo.mattstudios.me/artifactory/public")
+                url = uri("https://maven.petrus.dev/public")
             }
         }
 
