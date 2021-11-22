@@ -60,8 +60,8 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
             Material.LEATHER_HELMET, Material.LEATHER_CHESTPLATE, Material.LEATHER_LEGGINGS, Material.LEATHER_BOOTS
     );
 
-    private ItemStack itemStack;
-    private ItemMeta meta;
+    protected ItemStack itemStack;
+    protected ItemMeta meta;
 
     protected BaseItemBuilder(@NotNull final ItemStack itemStack) {
         Validate.notNull(itemStack, "Item can't be null!");

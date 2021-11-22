@@ -211,4 +211,18 @@ public class ItemBuilder extends BaseItemBuilder<ItemBuilder> {
         return new FireworkBuilder(itemStack);
     }
 
+    /**
+     * Sets the durability of items
+     *
+     * @param durability the durability of the item
+     * @return {@link ItemBuilder}
+     * @since 3.0.0
+     */
+    @NotNull
+    @Contract("_ -> this")
+    public ItemBuilder durability(final int durability) {
+        itemStack.setDurability((short) durability);
+        return this;
+    }
+
 }
