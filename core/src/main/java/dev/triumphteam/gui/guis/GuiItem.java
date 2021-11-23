@@ -98,9 +98,10 @@ public class GuiItem {
      *
      * @param itemStack The new {@link ItemStack}
      */
-    public void setItemStack(@NotNull final ItemStack itemStack) {
+    public GuiItem setItemStack(@NotNull final ItemStack itemStack) {
         Validate.notNull(itemStack, "The ItemStack for the GUI Item cannot be null!");
         this.itemStack = ItemNbt.setString(itemStack, "mf-gui", uuid.toString());
+        return this;
     }
 
     /**
@@ -108,8 +109,9 @@ public class GuiItem {
      *
      * @param action The new {@link GuiAction} to set
      */
-    public void setAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
+    public GuiItem setAction(@Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
         this.action = action;
+        return this;
     }
 
     /**
