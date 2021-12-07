@@ -128,7 +128,7 @@ public class GuiItem {
      * Gets the random {@link UUID} that was generated when the GuiItem was made
      */
     @NotNull
-    UUID getUuid() {
+    protected UUID getUuid() {
         return uuid;
     }
 
@@ -140,4 +140,8 @@ public class GuiItem {
         return action;
     }
 
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
+    }
 }
