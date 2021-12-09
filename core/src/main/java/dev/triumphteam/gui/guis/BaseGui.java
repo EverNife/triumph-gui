@@ -512,7 +512,6 @@ public abstract class BaseGui implements InventoryHolder {
      * @param item The {@link GuiItem} to replace in the original.
      */
     public void updateItem(final int slot, @NotNull final GuiItem item) {
-        if (!guiItems.containsKey(slot)) return;
         guiItems.put(slot, item);
         inventory.setItem(slot, item.getItemStack());
     }
