@@ -209,7 +209,10 @@ public abstract class BaseGui implements InventoryHolder {
      */
     public void removeItem(final int slot) {
         validateSlot(slot);
-        guiItems.remove(slot);
+        GuiItem previous = guiItems.remove(slot);
+        if (previous != null){
+            this.inventory.setItem(slot, null);
+        }
     }
 
     /**
