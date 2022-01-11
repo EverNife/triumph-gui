@@ -106,10 +106,10 @@ public abstract class BaseGui implements InventoryHolder {
     // Action to execute when clicked outside the GUI.
     private GuiAction<InventoryClickEvent> outsideClickAction;
 
-    // Whether or not the GUI is updating.
+    // Whether the GUI is updating.
     private boolean updating;
 
-    // Whether or not should run the actions from the close and open methods.
+    // Whether should run the actions from the close and open methods.
     private boolean runCloseAction = true;
     private boolean runOpenAction = true;
 
@@ -434,15 +434,7 @@ public abstract class BaseGui implements InventoryHolder {
 
         inventory.clear();
         populateGui();
-        openInventoryOnMainThread(player, inventory);
-    }
-
-    protected void openInventoryOnMainThread(HumanEntity player, Inventory inventory){
-        if (Bukkit.getServer().isPrimaryThread()){
-            player.openInventory(inventory);
-        }else {//Spigot 1.13+ requires openGui to be called from the main thread
-            Bukkit.getScheduler().runTask(plugin, () -> player.openInventory(inventory));
-        }
+        player.openInventory(inventory);
     }
 
     /**
@@ -533,6 +525,7 @@ public abstract class BaseGui implements InventoryHolder {
      * @param item The {@link GuiItem} to replace in the original.
      */
     public void updateItem(final int slot, @NotNull final GuiItem item) {
+        if (!guiItems.containsKey(slot)) return;
         guiItems.put(slot, item);
         inventory.setItem(slot, item.getItemStack());
     }
