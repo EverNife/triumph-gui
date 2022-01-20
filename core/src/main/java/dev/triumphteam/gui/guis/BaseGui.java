@@ -508,6 +508,7 @@ public abstract class BaseGui implements InventoryHolder {
             return;
         }
 
+        guiItem.setItemStack(itemStack);
         updateItem(slot, guiItem);
     }
 
