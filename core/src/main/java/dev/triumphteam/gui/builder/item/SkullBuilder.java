@@ -50,7 +50,7 @@ public final class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
         Field field;
 
         try {
-            final SkullMeta skullMeta = (SkullMeta) new ItemStack(SkullUtil.SKULL).getItemMeta();
+            final SkullMeta skullMeta = (SkullMeta) SkullUtil.skull().getItemMeta();
             field = skullMeta.getClass().getDeclaredField("profile");
             field.setAccessible(true);
         } catch (NoSuchFieldException e) {
@@ -62,12 +62,12 @@ public final class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     }
 
     SkullBuilder() {
-        super(new ItemStack(SkullUtil.SKULL));
+        super(SkullUtil.skull());
     }
 
     SkullBuilder(final @NotNull ItemStack itemStack) {
         super(itemStack);
-        if (itemStack.getType() != SkullUtil.SKULL) {
+        if (!SkullUtil.isPlayerSkull(itemStack)) {
             throw new GuiException("SkullBuilder requires the material to be a PLAYER_HEAD/SKULL_ITEM!");
         }
     }
@@ -82,7 +82,7 @@ public final class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     @NotNull
     @Contract("_, _ -> this")
     public SkullBuilder texture(@NotNull final String texture, @NotNull final UUID profileId) {
-        if (getItemStack().getType() != SkullUtil.SKULL) return this;
+        if (!SkullUtil.isPlayerSkull(getItemStack())) return this;
 
         if (PROFILE_FIELD == null) {
             return this;
@@ -123,7 +123,7 @@ public final class SkullBuilder extends BaseItemBuilder<SkullBuilder> {
     @NotNull
     @Contract("_ -> this")
     public SkullBuilder owner(@NotNull final OfflinePlayer player) {
-        if (getItemStack().getType() != SkullUtil.SKULL) return this;
+        if (!SkullUtil.isPlayerSkull(getItemStack())) return this;
 
         final SkullMeta skullMeta = (SkullMeta) getMeta();
 
