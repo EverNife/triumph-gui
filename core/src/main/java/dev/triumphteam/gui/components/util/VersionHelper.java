@@ -44,7 +44,7 @@ public final class VersionHelper {
     // Paper adventure changes
     private static final int V1_16_5 = 1165;
     // SkullMeta#setOwningPlayer was added
-    private static final int V1_12 = 1120;
+    private static final int V1_12_1 = 1121;
 
     private static final int CURRENT_VERSION = getCurrentVersion();
 
@@ -76,7 +76,7 @@ public final class VersionHelper {
      * Checks if the version doesn't have {@link org.bukkit.inventory.meta.SkullMeta#setOwningPlayer(OfflinePlayer)} and
      * {@link org.bukkit.inventory.meta.SkullMeta#setOwner(String)} should be used instead
      */
-    public static final boolean IS_SKULL_OWNER_LEGACY = CURRENT_VERSION <= V1_12;
+    public static final boolean IS_SKULL_OWNER_LEGACY = CURRENT_VERSION < V1_12_1;
 
     /**
      * Checks if the version has {@link org.bukkit.inventory.meta.ItemMeta#setCustomModelData(Integer)}
