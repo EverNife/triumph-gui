@@ -434,7 +434,15 @@ public abstract class BaseGui implements InventoryHolder {
 
         inventory.clear();
         populateGui();
-        player.openInventory(inventory);
+        openInventoryOnMainThread(player, inventory);
+    }
+
+    protected void openInventoryOnMainThread(HumanEntity player, Inventory inventory){
+        if (Bukkit.getServer().isPrimaryThread()){
+            player.openInventory(inventory);
+        }else {//Spigot 1.13+ requires openGui to be called from the main thread
+            Bukkit.getScheduler().runTask(plugin, () -> player.openInventory(inventory));
+        }
     }
 
     /**
