@@ -190,7 +190,7 @@ public class ScrollingGui extends PaginatedGui {
 
         populatePage();
 
-        player.openInventory(getInventory());
+        openInventoryOnMainThread(player, getInventory());
     }
 
     /**

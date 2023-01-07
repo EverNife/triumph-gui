@@ -162,7 +162,7 @@ class PersistentPaginatedGui extends PaginatedGui implements Serializable {
 
         pages.get(getPageNum()).populatePage(getInventory());
 
-        player.openInventory(getInventory());
+        openInventoryOnMainThread(player, getInventory());
     }
 
     /**

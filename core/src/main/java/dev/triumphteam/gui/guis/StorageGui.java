@@ -102,7 +102,7 @@ public class StorageGui extends BaseGui {
     public void open(@NotNull final HumanEntity player) {
         if (player.isSleeping()) return;
         populateGui();
-        player.openInventory(getInventory());
+        openInventoryOnMainThread(player, getInventory());
     }
 
 }

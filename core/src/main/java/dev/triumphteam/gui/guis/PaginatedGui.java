@@ -229,7 +229,7 @@ public class PaginatedGui extends BaseGui {
 
         populatePage();
 
-        player.openInventory(getInventory());
+        openInventoryOnMainThread(player, getInventory());
     }
 
     /**
