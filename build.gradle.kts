@@ -17,7 +17,7 @@ subprojects {
     }
 
     group = "dev.triumphteam"
-    version = "3.1.4-evernife-01"
+    version = "3.1.4-evernife-02"
 
     dependencies {
         compileOnly("org.jetbrains:annotations:21.0.1")

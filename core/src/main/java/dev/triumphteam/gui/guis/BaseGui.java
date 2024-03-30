@@ -891,7 +891,7 @@ public abstract class BaseGui implements InventoryHolder {
     /**
      * Populates the GUI with it's items.
      */
-    void populateGui() {
+    protected void populateGui() {
         for (final Map.Entry<Integer, GuiItem> entry : guiItems.entrySet()) {
             inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
         }
