@@ -949,7 +949,7 @@ public abstract class BaseGui implements InventoryHolder {
      *
      * @param slot The slot to check.
      */
-    private void validateSlot(final int slot) {
+    protected void validateSlot(final int slot) {
         final int limit = guiType.getLimit();
 
         if (guiType == GuiType.CHEST) {
