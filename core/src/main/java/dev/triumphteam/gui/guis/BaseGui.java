@@ -113,6 +113,9 @@ public abstract class BaseGui implements InventoryHolder {
     private boolean runCloseAction = true;
     private boolean runOpenAction = true;
 
+    // Used for saving any extra data on this GUI, usefull for giving context to the GUI
+    private final Map<String, Object> EXTRA_DATA = new LinkedHashMap<>();
+
     /**
      * The main constructor, using {@link String}.
      *
@@ -1007,4 +1010,7 @@ public abstract class BaseGui implements InventoryHolder {
         throw new GuiException("Slot " + slot + " is not valid for the gui type - " + guiType.name() + "!");
     }
 
+    public Map<String, Object> getExtraData() {
+        return EXTRA_DATA;
+    }
 }
