@@ -27,7 +27,7 @@ import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.components.util.ItemNbt;
 import dev.triumphteam.gui.components.util.VersionHelper;
 import dev.triumphteam.gui.guis.GuiItem;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -309,19 +309,22 @@ public abstract class BaseItemBuilder<B extends BaseItemBuilder<B>> implements C
     }
 
     /**
-     * {@inheritDoc}
+     * Color an {@link org.bukkit.inventory.ItemStack}
+     *
      * @param color color
-     * @return {@link ItemBuilder}
+     * @return {@link B}
+     * @see org.bukkit.inventory.meta.LeatherArmorMeta#setColor(Color)
+     * @see org.bukkit.inventory.meta.MapMeta#setColor(Color)
      * @since 3.0.3
      */
     @NotNull
     @Contract("_ -> this")
     public B color(@NotNull final Color color) {
         if (LEATHER_ARMOR.contains(itemStack.getType())) {
-            final LeatherArmorMeta lam = (LeatherArmorMeta) getMeta();
+            final LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) getMeta();
 
-            lam.setColor(color);
-            setMeta(lam);
+            leatherArmorMeta.setColor(color);
+            setMeta(leatherArmorMeta);
         }
 
         return (B) this;

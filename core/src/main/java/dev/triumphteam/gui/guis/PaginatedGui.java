@@ -33,6 +33,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -396,6 +397,7 @@ public class PaginatedGui extends BaseGui {
      * @return The pages number
      */
     public int getPagesNum() {
+        if (pageSize == 0) pageSize = calculatePageSize();
         return (int) Math.ceil((double) pageItems.size() / pageSize);
     }
 
@@ -404,13 +406,24 @@ public class PaginatedGui extends BaseGui {
      */
     private void populatePage() {
         // Adds the paginated items to the page
-        for (final GuiItem guiItem : getPageNum(pageNum)) {
-            for (int slot = 0; slot < getRows() * 9; slot++) {
-                if (getGuiItem(slot) != null || getInventory().getItem(slot) != null) continue;
-                currentPage.put(slot, guiItem);
-                getInventory().setItem(slot, guiItem.getItemStack());
-                break;
+        int slot = 0;
+        final int inventorySize = getInventory().getSize();
+        final Iterator<GuiItem> iterator = getPageNum(pageNum).iterator();
+        while (iterator.hasNext()) {
+            if (slot >= inventorySize) {
+                break; // Exit the loop if slot exceeds inventory size
             }
+
+            if (getGuiItem(slot) != null || getInventory().getItem(slot) != null) {
+                slot++;
+                continue;
+            }
+
+            final GuiItem guiItem = iterator.next();
+
+            currentPage.put(slot, guiItem);
+            getInventory().setItem(slot, guiItem.getItemStack());
+            slot++;
         }
     }
 
@@ -468,7 +481,7 @@ public class PaginatedGui extends BaseGui {
      *
      * @param pageNum Sets the current page to be the specified number
      */
-    void setPageNum(final int pageNum) {
+    public void setPageNum(final int pageNum) {
         this.pageNum = pageNum;
     }
 
@@ -489,10 +502,10 @@ public class PaginatedGui extends BaseGui {
         int counter = 0;
 
         for (int slot = 0; slot < getRows() * 9; slot++) {
-            if (getInventory().getItem(slot) == null) counter++;
+            if (getGuiItem(slot) == null) counter++;
         }
 
+        if (counter == 0) return 1;
         return counter;
     }
-
 }

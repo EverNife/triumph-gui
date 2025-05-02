@@ -1,18 +1,18 @@
 /**
  * MIT License
- *
+ * <p>
  * Copyright (c) 2021 TriumphTeam
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,9 +23,9 @@
  */
 package dev.triumphteam.gui.guis;
 
+import com.google.common.base.Preconditions;
 import dev.triumphteam.gui.components.GuiAction;
 import dev.triumphteam.gui.components.util.ItemNbt;
-import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -41,14 +41,12 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public class GuiItem {
 
-    // Action to do when clicking on the item
-    private GuiAction<InventoryClickEvent> action;
-
-    // The ItemStack of the GuiItem
-    private ItemStack itemStack;
-
     // Random UUID to identify the item when clicking
     private final UUID uuid = UUID.randomUUID();
+    // Action to do when clicking on the item
+    private GuiAction<InventoryClickEvent> action;
+    // The ItemStack of the GuiItem
+    private ItemStack itemStack;
 
     /**
      * Main constructor of the GuiItem
@@ -57,12 +55,12 @@ public class GuiItem {
      * @param action    The {@link GuiAction} to run when clicking on the Item
      */
     public GuiItem(@NotNull final ItemStack itemStack, @Nullable final GuiAction<@NotNull InventoryClickEvent> action) {
-        Validate.notNull(itemStack, "The ItemStack for the GUI Item cannot be null!");
+        Preconditions.checkNotNull(itemStack, "The ItemStack for the GUI Item cannot be null!");
 
         this.action = action;
 
         // Sets the UUID to an NBT tag to be identifiable later
-        this.itemStack = ItemNbt.setString(itemStack, "mf-gui", uuid.toString());
+        setItemStack(itemStack);
     }
 
     /**
@@ -94,14 +92,35 @@ public class GuiItem {
     }
 
     /**
+     * Gets the GuiItem's {@link ItemStack}
+     *
+     * @return The {@link ItemStack}
+     */
+    @NotNull
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
+
+    /**
      * Replaces the {@link ItemStack} of the GUI Item
      *
      * @param itemStack The new {@link ItemStack}
      */
     public GuiItem setItemStack(@NotNull final ItemStack itemStack) {
-        Validate.notNull(itemStack, "The ItemStack for the GUI Item cannot be null!");
-        this.itemStack = ItemNbt.setString(itemStack, "mf-gui", uuid.toString());
+        Preconditions.checkNotNull(itemStack, "The ItemStack for the GUI Item cannot be null!");
+        if (itemStack.getType() != Material.AIR) {
+            this.itemStack = ItemNbt.setString(itemStack.clone(), "mf-gui", uuid.toString());
+        } else {
+            this.itemStack = itemStack.clone();
+        }
         return this;
+    }
+
+    /**
+     * Gets the {@link GuiAction} to do when the player clicks on it
+     */
+    public @Nullable GuiAction<InventoryClickEvent> getAction() {
+        return action;
     }
 
     /**
@@ -115,29 +134,11 @@ public class GuiItem {
     }
 
     /**
-     * Gets the GuiItem's {@link ItemStack}
-     *
-     * @return The {@link ItemStack}
-     */
-    @NotNull
-    public ItemStack getItemStack() {
-        return itemStack;
-    }
-
-    /**
      * Gets the random {@link UUID} that was generated when the GuiItem was made
      */
     @NotNull
-    protected UUID getUuid() {
+    public UUID getUuid() {
         return uuid;
-    }
-
-    /**
-     * Gets the {@link GuiAction} to do when the player clicks on it
-     */
-    @Nullable
-    GuiAction<InventoryClickEvent> getAction() {
-        return action;
     }
 
     @Override

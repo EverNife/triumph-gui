@@ -23,9 +23,12 @@
  */
 package dev.triumphteam.gui.components.util;
 
+import com.google.common.primitives.Ints;
 import dev.triumphteam.gui.components.exception.GuiException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,9 +38,11 @@ import java.util.regex.Pattern;
  */
 public final class VersionHelper {
 
+    private static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
+
     // Unbreakable change
     private static final int V1_11 = 1110;
-    // Material change
+    // Material and components on items change
     private static final int V1_13 = 1130;
     // PDC and customModelData
     private static final int V1_14 = 1140;
@@ -45,48 +50,51 @@ public final class VersionHelper {
     private static final int V1_16_5 = 1165;
     // SkullMeta#setOwningPlayer was added
     private static final int V1_12_1 = 1121;
+    // PlayerProfile API
+    private static final int V1_20_1 = 1201;
+    private static final int V1_20_5 = 1205;
 
     private static final int CURRENT_VERSION = getCurrentVersion();
-
-    private static final boolean IS_PAPER = checkPaper();
-
     /**
      * Checks if the version supports Components or not
-     * Paper versions above 1.16.5 would be true
      * Spigot always false
      */
-    public static final boolean IS_COMPONENT_LEGACY = !IS_PAPER || CURRENT_VERSION < V1_16_5;
-
+    public static final boolean IS_COMPONENT_LEGACY = CURRENT_VERSION < V1_16_5;
     /**
      * Checks if the version is lower than 1.13 due to the item changes
      */
     public static final boolean IS_ITEM_LEGACY = CURRENT_VERSION < V1_13;
-
     /**
      * Checks if the version supports the {@link org.bukkit.inventory.meta.ItemMeta#setUnbreakable(boolean)} method
      */
     public static final boolean IS_UNBREAKABLE_LEGACY = CURRENT_VERSION < V1_11;
-
     /**
      * Checks if the version supports {@link org.bukkit.persistence.PersistentDataContainer}
      */
     public static final boolean IS_PDC_VERSION = CURRENT_VERSION >= V1_14;
-
     /**
      * Checks if the version doesn't have {@link org.bukkit.inventory.meta.SkullMeta#setOwningPlayer(OfflinePlayer)} and
      * {@link org.bukkit.inventory.meta.SkullMeta#setOwner(String)} should be used instead
      */
     public static final boolean IS_SKULL_OWNER_LEGACY = CURRENT_VERSION < V1_12_1;
-
     /**
      * Checks if the version has {@link org.bukkit.inventory.meta.ItemMeta#setCustomModelData(Integer)}
      */
     public static final boolean IS_CUSTOM_MODEL_DATA = CURRENT_VERSION >= V1_14;
-
+    /**
+     * Checks if the version has {@link org.bukkit.profile.PlayerProfile}
+     */
+    public static final boolean IS_PLAYER_PROFILE_API = CURRENT_VERSION >= V1_20_1;
+    /**
+     * Starting with version 1.20.5 the internal field referenced by {@link ItemMeta#getDisplayName()} is no longer a string
+     */
+    public static final boolean IS_ITEM_NAME_COMPONENT = CURRENT_VERSION >= V1_20_5;
+    private static final boolean IS_PAPER = checkPaper();
+    public static final boolean IS_FOLIA = checkFolia();
     /**
      * Checks if the version is 1.7.10, required for NBT nms classes
      */
-    public static final boolean IS_1_7_10 = CURRENT_VERSION == 1071;
+    public static final boolean IS_1_7_10 = CURRENT_VERSION == 1710;
 
     /**
      * Check if the server has access to the Paper API
@@ -104,9 +112,24 @@ public final class VersionHelper {
     }
 
     /**
+     * Check if the server has access to the Folia API
+     * Taken from <a href="https://github.com/PaperMC/Folia">Folia</a>
+     *
+     * @return True if on Folia server (or forks), false anything else
+     */
+    private static boolean checkFolia() {
+        try {
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
+            return true;
+        } catch (ClassNotFoundException ignored) {
+            return false;
+        }
+    }
+
+    /**
      * Gets the current server version
      *
-     * @return A protocol like number representing the version, for example 1.16.5 - 1165
+     * @return A protocol like number representing the version, for example, 1.16.5 -> 1165
      */
     private static int getCurrentVersion() {
         // No need to cache since will only run once
@@ -120,19 +143,17 @@ public final class VersionHelper {
             else stringBuilder.append(patch.replace(".", ""));
         }
 
-        Integer version = null;
-        try {
-            version = Integer.parseInt(stringBuilder.toString());
-        }catch (Exception ignored){
-
-        }
+        //noinspection UnstableApiUsage
+        final Integer version = Ints.tryParse(stringBuilder.toString());
 
         // Should never fail
         if (version == null) throw new GuiException("Could not retrieve server version!");
 
-        if (version == 1710) version = 1071;
-
         return version;
+    }
+
+    public static Class<?> craftClass(@NotNull final String name) throws ClassNotFoundException {
+        return Class.forName(CRAFTBUKKIT_PACKAGE + "." + name);
     }
 
 }

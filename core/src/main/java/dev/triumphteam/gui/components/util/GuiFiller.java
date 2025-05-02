@@ -60,7 +60,7 @@ public final class GuiFiller {
      * @param guiItems List of GuiItems
      */
     public void fillTop(@NotNull final List<GuiItem> guiItems) {
-        final List<GuiItem> items = repeatList(guiItems, gui.getRows() * 9);
+        final List<GuiItem> items = repeatList(guiItems);
         for (int i = 0; i < 9; i++) {
             if (!gui.getGuiItems().containsKey(i)) gui.setItem(i, items.get(i));
         }
@@ -82,7 +82,7 @@ public final class GuiFiller {
      */
     public void fillBottom(@NotNull final List<GuiItem> guiItems) {
         final int rows = gui.getRows();
-        final List<GuiItem> items = repeatList(guiItems, rows * 9);
+        final List<GuiItem> items = repeatList(guiItems);
         for (int i = 9; i > 0; i--) {
             if (gui.getGuiItems().get((rows * 9) - i) == null) {
                 gui.setItem((rows * 9) - i, items.get(i));
@@ -108,14 +108,13 @@ public final class GuiFiller {
         final int rows = gui.getRows();
         if (rows <= 2) return;
 
-        final List<GuiItem> items = repeatList(guiItems, rows * 9);
+        final List<GuiItem> items = repeatList(guiItems);
 
         for (int i = 0; i < rows * 9; i++) {
-            if ((i <= 8) || (i >= (rows * 9) - 9)
-                    || i == 9 || i == 18
-                    || i == 27 || i == 36
-                    || i == 17 || i == 26
-                    || i == 35 || i == 44)
+            if ((i <= 8)
+                    || (i >= (rows * 9) - 8) && (i <= (rows * 9) - 2)
+                    || i % 9 == 0
+                    || i % 9 == 8)
                 gui.setItem(i, items.get(i));
 
         }
@@ -152,11 +151,11 @@ public final class GuiFiller {
         final int maxCol = Math.max(colFrom, colTo);
 
         final int rows = gui.getRows();
-        final List<GuiItem> items = repeatList(guiItems, rows * 9);
+        final List<GuiItem> items = repeatList(guiItems);
 
         for (int row = 1; row <= rows; row++) {
             for (int col = 1; col <= 9; col++) {
-                int slot = getSlotFromRowCol(row, col);
+                final int slot = getSlotFromRowCol(row, col);
                 if (!((row >= minRow && row <= maxRow) && (col >= minCol && col <= maxCol)))
                     continue;
 
@@ -190,30 +189,46 @@ public final class GuiFiller {
         if (type == GuiType.CHEST) {
             fill = gui.getRows() * type.getLimit();
         } else {
-            fill = type.getLimit();
+            fill = type.getFillSize();
         }
 
-        final int rows = gui.getRows();
-        final List<GuiItem> items = repeatList(guiItems, rows * 9);
+        final List<GuiItem> items = repeatList(guiItems);
         for (int i = 0; i < fill; i++) {
             if (gui.getGuiItems().get(i) == null) gui.setItem(i, items.get(i));
         }
     }
 
     /**
-     * Repeats any type of Array. Allows for alternating items
-     * Stores references to existing Objects -> Does not create new objects
+     * Fills specified side of the GUI with a GuiItem
      *
-     * @param guiItems  Array Type
-     * @param newLength Length of array
-     * @return New array
+     * @param guiItems GuiItem
      */
-    private List<GuiItem> repeatList(@NotNull final List<GuiItem> guiItems, final int newLength) {
+    public void fillSide(@NotNull final Side side, @NotNull final List<GuiItem> guiItems) {
+        switch (side) {
+            case LEFT:
+                this.fillBetweenPoints(1, 1, gui.getRows(), 1, guiItems);
+                break;
+            case RIGHT:
+                this.fillBetweenPoints(1, 9, gui.getRows(), 9, guiItems);
+                break;
+            case BOTH:
+                this.fillSide(Side.LEFT, guiItems);
+                this.fillSide(Side.RIGHT, guiItems);
+        }
+    }
+
+    /**
+     * Repeats a list of items. Allows for alternating items
+     * Stores references to existing objects -> Does not create new objects
+     *
+     * @param guiItems List of items to repeat
+     * @return New list
+     */
+    private List<GuiItem> repeatList(@NotNull final List<GuiItem> guiItems) {
         final List<GuiItem> repeated = new ArrayList<>();
         Collections.nCopies(gui.getRows() * 9, guiItems).forEach(repeated::addAll);
         return repeated;
     }
-
 
     /**
      * Gets the slot from the row and col passed
@@ -226,4 +241,9 @@ public final class GuiFiller {
         return (col + (row - 1) * 9) - 1;
     }
 
+    public enum Side {
+        LEFT,
+        RIGHT,
+        BOTH
+    }
 }

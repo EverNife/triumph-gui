@@ -131,11 +131,6 @@ public final class GuiListener implements Listener {
         // GUI
         final BaseGui gui = (BaseGui) event.getInventory().getHolder();
 
-        // If it's a persistent paginated gui saves the current page modifications
-        if (gui instanceof PersistentPaginatedGui) {
-            ((PersistentPaginatedGui) gui).savePage();
-        }
-
         // The GUI action for closing
         final GuiAction<InventoryCloseEvent> closeAction = gui.getCloseGuiAction();
 
@@ -176,5 +171,4 @@ public final class GuiListener implements Listener {
         if (nbt == null) return false;
         return nbt.equals(guiItem.getUuid().toString());
     }
-
 }
