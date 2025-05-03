@@ -93,7 +93,7 @@ public final class VersionHelper {
     /**
      * Checks if the version is 1.7.10, required for NBT nms classes
      */
-    public static final boolean IS_1_7_10 = CURRENT_VERSION == 1710;
+    public static final boolean IS_1_7_10 = CURRENT_VERSION == 1071;
 
     /**
      * Check if the server has access to the Paper API
@@ -152,6 +152,10 @@ public final class VersionHelper {
 
         // Should never fail
         if (version == null) throw new GuiException("Could not retrieve server version!");
+
+        if (version == 1710) {
+            version = 1071; //Keep lower number to make version number comparations correct
+        }
 
         return version;
     }
