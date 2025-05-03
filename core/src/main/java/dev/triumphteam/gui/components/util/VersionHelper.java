@@ -23,7 +23,6 @@
  */
 package dev.triumphteam.gui.components.util;
 
-import com.google.common.primitives.Ints;
 import dev.triumphteam.gui.components.exception.GuiException;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -144,7 +143,12 @@ public final class VersionHelper {
         }
 
         //noinspection UnstableApiUsage
-        final Integer version = Ints.tryParse(stringBuilder.toString());
+        Integer version = null;
+        try {
+            version = Integer.parseInt(stringBuilder.toString());
+        }catch (Exception ignored){
+
+        }
 
         // Should never fail
         if (version == null) throw new GuiException("Could not retrieve server version!");
